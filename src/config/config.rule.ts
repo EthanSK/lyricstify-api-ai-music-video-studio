@@ -16,8 +16,8 @@ export default class ConfigRule {
   @IsOptional()
   APP_PORT: number;
 
-  @IsString()
-  @IsNotEmpty()
+  // @IsString()
+  // @IsNotEmpty()
   SPOTIFY_COOKIE: string;
 
   @IsString()

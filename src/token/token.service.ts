@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Scope,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { AxiosRequestConfig } from 'axios';
@@ -11,24 +12,27 @@ import { Cache } from 'cache-manager';
 import { firstValueFrom } from 'rxjs';
 import { httpCatchAxiosError } from '../common/http/http.catch-axios-error';
 import { TokenEntity } from './entities/token.entity';
+import { REQUEST } from '@nestjs/core';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST }) // Ensure request scope
 export class TokenService {
   private readonly baseURL: string = 'https://open.spotify.com';
 
   private readonly headers: AxiosRequestConfig['headers'] = {
     Accept: 'application/json',
     'App-Platform': 'WebPlayer',
-    Cookie: this.configService.get<string>('app.spotifyCookie'),
+    Cookie: (this.request as any)['SPOTIFY_COOKIE'], //(global as any).SPOTIFY_COOKIE, //this.dynamicConfigService.getSpotifyCookie(), //process.env.SPOTIFY_COOKIE, //this.configService.get<string>('app.spotifyCookie'),
   };
 
   constructor(
     private readonly configService: ConfigService,
     private readonly httpService: HttpService,
+    @Inject(REQUEST) private readonly request: Request,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
   async create() {
+    console.log('headers: ', this.headers);
     const request$ = this.httpService
       .get<TokenEntity>('/get_access_token', {
         baseURL: this.baseURL,
