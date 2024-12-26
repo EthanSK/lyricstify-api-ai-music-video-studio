@@ -1,22 +1,10 @@
-import { VersioningType } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { NestFactory } from '@nestjs/core';
-import {
-  ExpressAdapter,
-  NestExpressApplication,
-} from '@nestjs/platform-express';
-import {
-  DocumentBuilder,
-  SwaggerDocumentOptions,
-  SwaggerModule,
-} from '@nestjs/swagger';
-import helmet from 'helmet';
-import { AppModule } from './app.module';
-import ConfigEnvironment from './common/config/config.env';
-import { onRequest } from 'firebase-functions/https';
-import * as express from 'express';
 import { Logger } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter } from '@nestjs/platform-express';
+import * as express from 'express';
 import * as admin from 'firebase-admin';
+import { onRequest } from 'firebase-functions/https';
+import { AppModule } from './app.module';
 
 admin.initializeApp();
 
@@ -84,14 +72,8 @@ async function createNestServer(expressInstance: express.Express) {
   // const port = configService.get<number>('app.port') || 3000;
   // const env = configService.get<`${ConfigEnvironment}`>('app.env');
 
-  app.use(helmet());
-  app.enableVersioning({ type: VersioningType.URI });
-
-  // if (env === 'development') {
-  //   SwaggerModule.setup('docs', app, createSwaggerDocument({ app, port }));
-  // }
-
-  // await app.listen(port);
+  // app.use(helmet());
+  // app.enableVersioning({ type: VersioningType.URI });
 
   await app.init();
 
