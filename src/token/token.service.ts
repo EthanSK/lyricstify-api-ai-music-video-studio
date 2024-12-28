@@ -61,17 +61,18 @@ export class TokenService {
     const key = 'access_token';
     const cached = await this.cacheManager.get<TokenEntity>(key);
 
-    if (cached !== undefined) {
-      return cached;
-    }
+    // dont use cached
+    // if (cached !== undefined) {
+    //   return cached;
+    // }
 
     const token = await this.create();
-    await this.cacheManager.set(
-      key,
-      token,
-      // Make sure the cached token is expired 5s faster before its actual expired time
-      token.accessTokenExpirationTimestampMs - 5000 - new Date().getTime(),
-    );
+    // await this.cacheManager.set(
+    //   key,
+    //   token,
+    //   // Make sure the cached token is expired 5s faster before its actual expired time
+    //   token.accessTokenExpirationTimestampMs - 5000 - new Date().getTime(),
+    // );
 
     return token;
   }
