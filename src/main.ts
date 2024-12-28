@@ -54,7 +54,7 @@ async function createNestServer(expressInstance: express.Express) {
       res: express.Response,
       next: express.NextFunction,
     ) => {
-      console.log('req query: ', req.query);
+      // console.log('req query: ', req.query);
       const queryParam = req.query['spotify_cookie'];
       // console.log('Setting SPOTIFY_COOKIE from query param', queryParam);
       if (queryParam) {
