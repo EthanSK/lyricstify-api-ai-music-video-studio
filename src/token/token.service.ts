@@ -51,6 +51,9 @@ export class TokenService {
     if (token.isAnonymous === true) {
       throw new InternalServerErrorException(
         'Your token is treated as anonymous, please check your SPOTIFY_COOKIE environment.',
+        {
+          description: 'SPOTIFY_COOKIE_INVALID',
+        },
       );
     }
 
