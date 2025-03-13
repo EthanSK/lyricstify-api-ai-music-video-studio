@@ -9,7 +9,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import type { AxiosRequestConfig } from 'axios';
 import { Cache } from 'cache-manager';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
 import { httpCatchAxiosError } from '../common/http/http.catch-axios-error';
 import { TokenEntity } from './entities/token.entity';
 import { REQUEST } from '@nestjs/core';
@@ -40,6 +40,10 @@ export class TokenService {
         params: { reason: 'transport', productType: 'web_player' },
       })
       .pipe(
+        catchError((err) => {
+          console.log('err: ', err);
+          throw err;
+        }),
         httpCatchAxiosError({
           defaultStatusText:
             'Failed to retrieve Spotify internal token, please check your SPOTIFY_COOKIE environment',
