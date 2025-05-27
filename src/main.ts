@@ -86,4 +86,9 @@ createNestServer(server)
   .then(() => Logger.log('Lyricstify Nest listening.'))
   .catch((err) => Logger.error('Lyricstify Nest Error', err));
 
-export const lyricstify = onRequest(server);
+export const lyricstify = onRequest(
+  {
+    maxInstances: 1,
+  },
+  server,
+);
