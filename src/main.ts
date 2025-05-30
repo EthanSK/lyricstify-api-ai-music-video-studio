@@ -88,7 +88,7 @@ createNestServer(server)
 
 export const lyricstify = onRequest(
   {
-    maxInstances: 1,
+    // maxInstances: 1,
   },
   server,
 );
